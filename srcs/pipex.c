@@ -6,7 +6,7 @@
 /*   By: clados-s <clados-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:59:24 by clados-s          #+#    #+#             */
-/*   Updated: 2025/10/09 15:36:09 by clados-s         ###   ########.fr       */
+/*   Updated: 2025/10/09 16:20:44 by clados-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ int	main(int argc, char **argv, char **envp)
 		return (1);
 	}
 	init_data(&data, argc, argv);
-	pipe(pipe_fd);
 	if (pipe_fd == -1)
 		return (1);
 	pid1 = fork();
@@ -58,7 +57,36 @@ void	child_one_process(t_pipex *data, int *pipe_fd, char **envp)
 	}
 	dup2(infile_fd, STDIN_FILENO);
 	close (infile_fd);
-	execve();
+	execve(get_cmd_path, data->cmd1_args, *envp);
 	perror("pipex: comando não encontrado");
 	exit(127);
+}
+
+char	*get_cmd_path(char *cmd, char **envp)
+{
+	char	**paths;
+	char	*path_part;
+	char	*full_path;
+	int		i;
+
+	while (*envp && ft_strncmp(*envp, "PATH=", 5) != 0)
+		envp++;
+	if (!*envp)
+		return (NULL);
+	paths = ft_split(*envp + 5, ':');
+	i = 0;
+	while (paths[i])
+	{
+		path_part = ft_strjoin(paths[i], "/");
+		full_path = ft_strjoin(path_part, cmd);
+		free (path_part);
+		if (access(full_path, X_OK) == 0)
+		{
+			free_split(paths);
+			return (full_path);
+		}
+		free(full_path);
+		i++;
+	}
+	return (free_split_null);
 }
