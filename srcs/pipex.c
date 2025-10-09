@@ -6,7 +6,7 @@
 /*   By: clados-s <clados-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:59:24 by clados-s          #+#    #+#             */
-/*   Updated: 2025/10/09 16:27:41 by clados-s         ###   ########.fr       */
+/*   Updated: 2025/10/09 16:37:16 by clados-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ int	main(int argc, char **argv, char **envp)
 
 void	child_one_process(t_pipex *data, int *pipe_fd, char **envp)
 {
-	int	infile_fd;
+	int		infile_fd;
+	char	*cmd_path;
 
 	close(pipe_fd[0]);
 	dup2(pipe_fd[1], STDOUT_FILENO);
@@ -57,7 +58,8 @@ void	child_one_process(t_pipex *data, int *pipe_fd, char **envp)
 	}
 	dup2(infile_fd, STDIN_FILENO);
 	close (infile_fd);
-	execve(get_cmd_path, data->cmd1_args, *envp);
+	cmd_path = get_cmd_path(data->cmd1_args[0], envp);
+	execve(cmd_path, data->cmd1_args, *envp);
 	perror("pipex: comando não encontrado");
 	exit(127);
 }
