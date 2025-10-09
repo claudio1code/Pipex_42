@@ -8,7 +8,7 @@ SRC_DIR = srcs/
 OBJS_DIR = objs/
 LIBFT_DIR = libft/
 
-SRCS_LIST = main.c
+SRCS_LIST = pipex.c
 
 SRCS = $(addprefix $(SRCS_DIR), $(SRCS_LIST))
 OBJS = $(addprefix $(OBJS_DIR), $(SRCS_LIST:.c=.o))
