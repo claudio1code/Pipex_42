@@ -6,7 +6,7 @@
 /*   By: clados-s <clados-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:59:24 by clados-s          #+#    #+#             */
-/*   Updated: 2025/10/09 16:20:44 by clados-s         ###   ########.fr       */
+/*   Updated: 2025/10/09 16:27:41 by clados-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	main(int argc, char **argv, char **envp)
 		return (1);
 	}
 	init_data(&data, argc, argv);
-	if (pipe_fd == -1)
+	if (pipe(pipe_fd) == -1)
 		return (1);
 	pid1 = fork();
 	if (pid1 == -1)
@@ -88,5 +88,5 @@ char	*get_cmd_path(char *cmd, char **envp)
 		free(full_path);
 		i++;
 	}
-	return (free_split_null);
+	return (free_split_null(paths));
 }
