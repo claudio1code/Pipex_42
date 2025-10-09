@@ -6,7 +6,7 @@
 /*   By: clados-s <clados-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:59:24 by clados-s          #+#    #+#             */
-/*   Updated: 2025/10/08 16:09:15 by clados-s         ###   ########.fr       */
+/*   Updated: 2025/10/09 15:36:09 by clados-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	init_data(t_pipex *data, int argc, char **argv)
 	data->cmd2_args = ft_split(argv[3], ' ');
 }
 
-int	main(int argc, char **argv)
+int	main(int argc, char **argv, char **envp)
 {
 	t_pipex	data;
 	int		pipe_fd[2];
@@ -39,43 +39,26 @@ int	main(int argc, char **argv)
 	if (pid1 == -1)
 		return (1);
 	if (pid1 == 0)
-	{
-
-	}
+		child_one_process(&data, pipe_fd, envp);
 	return (0);
 }
 
-#include "pipex.h"
-
-void	init_data(t_pipex *data, int argc, char **argv)
+void	child_one_process(t_pipex *data, int *pipe_fd, char **envp)
 {
-	data->infile = argv[1];
-	data->outfile = argv[4];
-	data->cmd1_args = ft_split(argv[2], ' ');
-	data->cmd2_args = ft_split(argv[3], ' ');
-}
+	int	infile_fd;
 
-int	main(int argc, char **argv)
-{
-	t_pipex	data;
-	int		pipe_fd[2];
-	pid_t	pid1;
-
-	if (argc != 5)
+	close(pipe_fd[0]);
+	dup2(pipe_fd[1], STDOUT_FILENO);
+	close (pipe_fd[1]);
+	infile_fd = open(data->infile, O_RDONLY);
+	if (infile_fd == -1)
 	{
-		ft_printf("Uso: ./pipex cmd1 cmd2 outfile\n");
-		return (1);
+		perror("pipex: infile");
+		exit(1);
 	}
-	init_data(&data, argc, argv);
-	pipe(pipe_fd);
-	if (pipe(pipe_fd) == -1)
-		return (1);
-	pid1 = fork();
-	if (pid1 == -1)
-		return (1);
-	if (pid1 == 0)
-	{
-
-	}
-	return (0);
+	dup2(infile_fd, STDIN_FILENO);
+	close (infile_fd);
+	execve();
+	perror("pipex: comando não encontrado");
+	exit(127);
 }

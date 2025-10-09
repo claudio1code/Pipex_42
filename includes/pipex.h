@@ -6,7 +6,7 @@
 /*   By: clados-s <clados-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 11:17:12 by clados-s          #+#    #+#             */
-/*   Updated: 2025/10/09 14:44:00 by clados-s         ###   ########.fr       */
+/*   Updated: 2025/10/09 15:31:15 by clados-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ typedef struct s_pipex
 }t_pipex;
 
 void	init_data(t_pipex *data, int argc, char **argv);
-int		main(int argc, char **argv);
-
+int		main(int argc, char **argv, char **envp);
+void	child_one_process(t_pipex *data, int *pipe_fd, char **envp);
 
 #endif
