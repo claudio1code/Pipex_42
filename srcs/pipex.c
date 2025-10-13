@@ -6,7 +6,7 @@
 /*   By: clados-s <clados-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:59:24 by clados-s          #+#    #+#             */
-/*   Updated: 2025/10/13 10:36:30 by clados-s         ###   ########.fr       */
+/*   Updated: 2025/10/13 14:11:03 by clados-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_pipex	data;
 	int		pipe_fd[2];
-	pid_t	pid1;
 
 	if (argc != 5)
 	{
@@ -34,12 +33,14 @@ int	main(int argc, char **argv, char **envp)
 	}
 	init_data(&data, argc, argv);
 	if (pipe(pipe_fd) == -1)
+	{
+		perror("pipex: pipe");
+		free_data(&data);
 		return (1);
-	pid1 = fork();
-	if (pid1 == -1)
-		return (1);
-	if (pid1 == 0)
-		child_one_process(&data, pipe_fd, envp);
+	}
+	parents_process(&data, pipe_fd, envp);
+	free_split(data.cmd1_args);
+	free_split(data.cmd2_args);
 	return (0);
 }
 
@@ -60,36 +61,33 @@ void	child_one_process(t_pipex *data, int *pipe_fd, char **envp)
 	dup2(infile_fd, STDIN_FILENO);
 	close (infile_fd);
 	cmd_path = get_cmd_path(data->cmd1_args[0], envp);
-	execve(cmd_path, data->cmd1_args, *envp);
+	execve(cmd_path, data->cmd1_args, envp);
 	perror("pipex: comando não encontrado");
+	free(cmd_path);
 	exit(127);
 }
 
-char	*get_cmd_path(char *cmd, char **envp)
+void	child_two_process(t_pipex *data, int *pipe_fd, char **envp)
 {
-	char	**paths;
-	char	*path_part;
-	char	*full_path;
-	int		i;
+	int		outfile_fd;
+	char	*cmd_path;
 
-	while (*envp && ft_strncmp(*envp, "PATH=", 5) != 0)
-		envp++;
-	if (!*envp)
-		return (NULL);
-	paths = ft_split(*envp + 5, ':');
-	i = 0;
-	while (paths[i])
+	close(pipe_fd[1]);
+	dup2(pipe_fd[0], STDIN_FILENO);
+	close(pipe_fd[0]);
+	outfile_fd = open(data->outfile, O_RDONLY);
+	if (outfile_fd == -1)
 	{
-		path_part = ft_strjoin(paths[i], "/");
-		full_path = ft_strjoin(path_part, cmd);
-		free (path_part);
-		if (access(full_path, X_OK) == 0)
-		{
-			free_split(paths);
-			return (full_path);
-		}
-		free(full_path);
-		i++;
+		perror("pipex: outfile");
+		exit(1);
 	}
-	return (free_split_null(paths));
+	dup2(outfile_fd, STDOUT_FILENO);
+	close (outfile_fd);
+	cmd_path = get_cmd_path(data->cmd2_args[0], envp);
+	execve(cmd_path, data->cmd2_args, envp);
+	perror("pipex: comando não encontrado");
+	free(cmd_path);
+	exit(127);
 }
+
+
