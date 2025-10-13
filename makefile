@@ -10,12 +10,13 @@ LIBFT_DIR = libft/
 
 SRCS_LIST = pipex.c utils.c
 
-SRCS = $(addprefix $(SRCS_DIR), $(SRCS_LIST))
+SRCS = $(addprefix $(SRC_DIR), $(SRCS_LIST))
 OBJS = $(addprefix $(OBJS_DIR), $(SRCS_LIST:.c=.o))
 
 LIBFT = $(LIBFT_DIR)/libft.a
 
-INCLUDES = -I $(INCS_DIR) -I $(LIBFT_DIR)
+INCLUDES = -I $(INC_DIR) -I $(LIBFT_DIR)includes
+
 LDFLAGS = -L$(LIBFT_DIR) -lft
 
 GREEN = \033[0;92m

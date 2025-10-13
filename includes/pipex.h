@@ -6,7 +6,7 @@
 /*   By: clados-s <clados-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 11:17:12 by clados-s          #+#    #+#             */
-/*   Updated: 2025/10/13 16:09:07 by clados-s         ###   ########.fr       */
+/*   Updated: 2025/10/13 16:44:39 by clados-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <stdio.h>
 # include <string.h>
 # include <sys/types.h>
+# include <sys/wait.h>
 
 typedef struct s_pipex
 {
