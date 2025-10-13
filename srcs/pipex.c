@@ -6,7 +6,7 @@
 /*   By: clados-s <clados-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:59:24 by clados-s          #+#    #+#             */
-/*   Updated: 2025/10/13 14:11:03 by clados-s         ###   ########.fr       */
+/*   Updated: 2025/10/13 15:45:37 by clados-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ int	main(int argc, char **argv, char **envp)
 	if (pipe(pipe_fd) == -1)
 	{
 		perror("pipex: pipe");
-		free_data(&data);
 		return (1);
 	}
 	parents_process(&data, pipe_fd, envp);
@@ -75,7 +74,7 @@ void	child_two_process(t_pipex *data, int *pipe_fd, char **envp)
 	close(pipe_fd[1]);
 	dup2(pipe_fd[0], STDIN_FILENO);
 	close(pipe_fd[0]);
-	outfile_fd = open(data->outfile, O_RDONLY);
+	outfile_fd = open(data->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (outfile_fd == -1)
 	{
 		perror("pipex: outfile");

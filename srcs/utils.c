@@ -6,7 +6,7 @@
 /*   By: clados-s <clados-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 14:00:37 by clados-s          #+#    #+#             */
-/*   Updated: 2025/10/13 14:09:53 by clados-s         ###   ########.fr       */
+/*   Updated: 2025/10/13 15:45:49 by clados-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,4 @@ char	*get_cmd_path(char *cmd, char **envp)
 		i++;
 	}
 	return (free_split_null(paths));
-}
-
-void	*free_data(t_pipex *data)
-{
-	if (data)
-		free(data);
 }
