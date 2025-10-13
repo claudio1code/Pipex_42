@@ -6,13 +6,13 @@
 /*   By: clados-s <clados-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 14:00:37 by clados-s          #+#    #+#             */
-/*   Updated: 2025/10/13 15:45:49 by clados-s         ###   ########.fr       */
+/*   Updated: 2025/10/13 16:16:53 by clados-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	parents_process(t_pipex *data, int *pipe_fd, char **envp)
+void	parent_process(t_pipex *data, int *pipe_fd, char **envp)
 {
 	pid_t	pid1;
 	pid_t	pid2;
@@ -24,7 +24,7 @@ void	parents_process(t_pipex *data, int *pipe_fd, char **envp)
 		return ;
 	}
 	if (pid1 == 0)
-		child_one_process(&data, pipe_fd, envp);
+		child_one_process(data, pipe_fd, envp);
 	pid2 = fork();
 	if (pid2 == -1)
 	{
@@ -32,7 +32,7 @@ void	parents_process(t_pipex *data, int *pipe_fd, char **envp)
 		return ;
 	}
 	if (pid2 == 0)
-		child_two_process(&data, pipe_fd, envp);
+		child_two_process(data, pipe_fd, envp);
 	close(pipe_fd[0]);
 	close(pipe_fd[1]);
 	waitpid(pid1, NULL, 0);

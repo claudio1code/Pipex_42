@@ -6,7 +6,7 @@
 /*   By: clados-s <clados-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 11:17:12 by clados-s          #+#    #+#             */
-/*   Updated: 2025/10/13 15:47:46 by clados-s         ###   ########.fr       */
+/*   Updated: 2025/10/13 16:09:07 by clados-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,5 @@ int		main(int argc, char **argv, char **envp);
 void	child_one_process(t_pipex *data, int *pipe_fd, char **envp);
 void	child_two_process(t_pipex *data, int *pipe_fd, char **envp);
 char	*get_cmd_path(char *cmd, char **envp);
-void	parents_process(t_pipex *data, int *pipe_fd, char **envp);
+void	parent_process(t_pipex *data, int *pipe_fd, char **envp);
 #endif

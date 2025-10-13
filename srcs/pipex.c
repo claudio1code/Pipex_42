@@ -6,20 +6,11 @@
 /*   By: clados-s <clados-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:59:24 by clados-s          #+#    #+#             */
-/*   Updated: 2025/10/13 15:54:04 by clados-s         ###   ########.fr       */
+/*   Updated: 2025/10/13 16:23:17 by clados-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
-void	init_data(t_pipex *data, int argc, char **argv)
-{
-	(void)argc;
-	data->infile = argv[1];
-	data->outfile = argv[4];
-	data->cmd1_args = ft_split(argv[2], ' ');
-	data->cmd2_args = ft_split(argv[3], ' ');
-}
 
 int	main(int argc, char **argv, char **envp)
 {
