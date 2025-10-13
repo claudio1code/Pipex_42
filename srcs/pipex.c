@@ -6,7 +6,7 @@
 /*   By: clados-s <clados-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:59:24 by clados-s          #+#    #+#             */
-/*   Updated: 2025/10/09 16:37:16 by clados-s         ###   ########.fr       */
+/*   Updated: 2025/10/13 10:36:30 by clados-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	init_data(t_pipex *data, int argc, char **argv)
 {
+	(void)argc;
 	data->infile = argv[1];
 	data->outfile = argv[4];
 	data->cmd1_args = ft_split(argv[2], ' ');
