@@ -1,42 +1,60 @@
-NAME	= pipex
-CC		= cc
-CFLAGS	= -Wall -Wextra -Werror -g3
+NAME = pipex
 
-# -- Caminhos definidos diretamente --
-SRCS	= srcs/pipex.c srcs/utils.c
-OBJS	= objs/pipex.o objs/utils.o
+CC = cc
+CFLAGS = -Wall -Wextra  -Werror -g3
 
-# -- Flags de compilação --
-INC		= -I includes/ -I libft/includes
-LIBS	= -L libft/ -lft
+INC_DIR = includes/
+SRC_DIR = srcs/
+OBJS_DIR = objs/
+LIBFT_DIR = libft/
 
-# ------------------------------------
+SRCS_LIST = pipex.c utils.c
 
-all: lib-compile $(NAME)
+SRCS = $(addprefix $(SRC_DIR), $(SRCS_LIST))
+OBJS = $(addprefix $(OBJS_DIR), $(SRCS_LIST:.c=.o))
 
-# Regra para compilar a libft primeiro
-lib-compile:
-	@make -sC libft/
+LIBFT = $(LIBFT_DIR)/libft.a
 
-$(NAME): $(OBJS)
-	@echo "A linkar $(NAME)..."
-	@$(CC) $(CFLAGS) $(OBJS) $(LIBS) -o $(NAME)
-	@echo "Pipex compilado!"
+INCLUDES = -I $(INC_DIR) -I $(LIBFT_DIR)includes
 
-# Regra de padrão explícita
-objs/%.o: srcs/%.c
-	@mkdir -p objs
-	@echo "A compilar $<..."
-	@$(CC) $(CFLAGS) $(INC) -c $< -o $@
+LDFLAGS = -L$(LIBFT_DIR) -lft
+
+GREEN = \033[0;92m
+YELLOW = \033[0;93m
+CYAN = \033[0;96m
+DEF_COLOR = \033[0;39m
+
+all: $(NAME)
+
+$(NAME): $(OBJS) $(LIBFT)
+	@echo -n "$(YELLOW)A linkar $(NAME)... $(DEF_COLOR)"
+	@sh -c 'i=0; while [ $$i -lt 10 ]; do \
+		echo -n "\b|"; sleep 0.05; \
+		echo -n "\b/"; sleep 0.05; \
+		echo -n "\b-"; sleep 0.05; \
+		echo -n "\b\\"; sleep 0.05; \
+		i=$$(($$i+1)); \
+	done'
+	@echo "\b\b$(GREEN)OK!$(DEF_COLOR)"
+	@$(CC) $(CFLAGS) $(OBJS) $(LDFLAGS) -o $(NAME)
+	@echo "$(GREEN)Pipex compilado com sucesso!$(DEF_COLOR)"
+
+$(OBJS_DIR)%.o: $(SRC_DIR)%.c
+	@mkdir -p $(OBJS_DIR)
+	@echo "$(CYAN)A compilar $<... $(DEF_COLOR)"
+	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+
+$(LIBFT):
+	@make -sC $(LIBFT_DIR)
 
 clean:
-	@rm -rf objs
-	@make -sC libft/ clean
+	@rm -rf $(OBJS_DIR)
+	@make -sC $(LIBFT_DIR) clean
 
 fclean: clean
 	@rm -f $(NAME)
-	@make -sC libft/ fclean
+	@make -sC $(LIBFT_DIR) fclean
 
 re: fclean all
 
-.PHONY: all clean fclean re lib-compile
+.PHONY: all clean fclean re
