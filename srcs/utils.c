@@ -6,7 +6,7 @@
 /*   By: clados-s <clados-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 14:00:37 by clados-s          #+#    #+#             */
-/*   Updated: 2025/10/14 14:44:45 by clados-s         ###   ########.fr       */
+/*   Updated: 2025/10/14 15:11:43 by clados-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ void	execute_command(char **cmds_args, char **envp)
 		perror("pipex: command not found");
 		exit(127);
 	}
+	execve(cmd_path, cmds_args, envp);
 	free(cmd_path);
 	perror("pipex");
 	exit(1);

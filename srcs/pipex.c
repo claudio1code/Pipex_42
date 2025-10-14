@@ -6,7 +6,7 @@
 /*   By: clados-s <clados-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:59:24 by clados-s          #+#    #+#             */
-/*   Updated: 2025/10/14 14:45:50 by clados-s         ###   ########.fr       */
+/*   Updated: 2025/10/14 15:16:03 by clados-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,11 @@ int	main(int argc, char **argv, char **envp)
 	int		pipe_fd[2];
 
 	if (argc != 5)
-		error_exit("Uso: ./pipex cmd1 cmd2 outfile\n", &data);
+	{
+		ft_putstr_fd("Uso: ./pipex infile cmd1 cmd2 outfile\n", 2);
+		return (1);
+	}
+	ft_bzero(&data, sizeof(t_pipex));
 	init_data(&data, argc, argv);
 	if (pipe(pipe_fd) == -1)
 		error_exit("pipex: pipe", &data);
