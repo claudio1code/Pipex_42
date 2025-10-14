@@ -6,7 +6,7 @@
 /*   By: clados-s <clados-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:59:24 by clados-s          #+#    #+#             */
-/*   Updated: 2025/10/13 16:50:55 by clados-s         ###   ########.fr       */
+/*   Updated: 2025/10/14 14:45:50 by clados-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,10 @@ int	main(int argc, char **argv, char **envp)
 	int		pipe_fd[2];
 
 	if (argc != 5)
-	{
-		ft_printf("Uso: ./pipex cmd1 cmd2 outfile\n");
-		return (1);
-	}
+		error_exit("Uso: ./pipex cmd1 cmd2 outfile\n", &data);
 	init_data(&data, argc, argv);
 	if (pipe(pipe_fd) == -1)
-	{
-		perror("pipex: pipe");
-		return (1);
-	}
+		error_exit("pipex: pipe", &data);
 	parent_process(&data, pipe_fd, envp);
 	free_split(data.cmd1_args);
 	free_split(data.cmd2_args);
@@ -46,45 +40,29 @@ int	main(int argc, char **argv, char **envp)
 void	child_one_process(t_pipex *data, int *pipe_fd, char **envp)
 {
 	int		infile_fd;
-	char	*cmd_path;
 
 	close(pipe_fd[0]);
 	dup2(pipe_fd[1], STDOUT_FILENO);
 	close (pipe_fd[1]);
 	infile_fd = open(data->infile, O_RDONLY);
 	if (infile_fd == -1)
-	{
-		perror("pipex: infile");
-		exit(1);
-	}
+		error_exit("pipex: infile", data);
 	dup2(infile_fd, STDIN_FILENO);
 	close (infile_fd);
-	cmd_path = get_cmd_path(data->cmd1_args[0], envp);
-	execve(cmd_path, data->cmd1_args, envp);
-	perror("pipex: comando não encontrado");
-	free(cmd_path);
-	exit(127);
+	execute_command(data->cmd1_args, envp);
 }
 
 void	child_two_process(t_pipex *data, int *pipe_fd, char **envp)
 {
 	int		outfile_fd;
-	char	*cmd_path;
 
 	close(pipe_fd[1]);
 	dup2(pipe_fd[0], STDIN_FILENO);
 	close(pipe_fd[0]);
 	outfile_fd = open(data->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (outfile_fd == -1)
-	{
-		perror("pipex: outfile");
-		exit(1);
-	}
+		error_exit("pipex: outfile", data);
 	dup2(outfile_fd, STDOUT_FILENO);
 	close (outfile_fd);
-	cmd_path = get_cmd_path(data->cmd2_args[0], envp);
-	execve(cmd_path, data->cmd2_args, envp);
-	perror("pipex: comando não encontrado");
-	free(cmd_path);
-	exit(127);
+	execute_command(data->cmd2_args, envp);
 }

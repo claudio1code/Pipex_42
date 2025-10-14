@@ -6,7 +6,7 @@
 /*   By: clados-s <clados-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 14:00:37 by clados-s          #+#    #+#             */
-/*   Updated: 2025/10/13 16:16:53 by clados-s         ###   ########.fr       */
+/*   Updated: 2025/10/14 14:44:45 by clados-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,4 +66,32 @@ char	*get_cmd_path(char *cmd, char **envp)
 		i++;
 	}
 	return (free_split_null(paths));
+}
+
+void	error_exit(char *msg, t_pipex *data)
+{
+	perror(msg);
+	if (data->cmd1_args)
+		free_split(data->cmd1_args);
+	if (data->cmd2_args)
+		free_split(data->cmd2_args);
+	exit(1);
+}
+
+void	execute_command(char **cmds_args, char **envp)
+{
+	char	*cmd_path;
+
+	cmd_path = get_cmd_path(cmds_args[0], envp);
+	if (!cmd_path)
+	{
+		ft_putstr_fd("pipex: command not found: ", 2);
+		ft_putstr_fd(cmds_args[0], 2);
+		ft_putstr_fd("\n", 2);
+		perror("pipex: command not found");
+		exit(127);
+	}
+	free(cmd_path);
+	perror("pipex");
+	exit(1);
 }
