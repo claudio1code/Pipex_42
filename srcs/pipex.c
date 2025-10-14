@@ -6,7 +6,7 @@
 /*   By: clados-s <clados-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/07 16:59:24 by clados-s          #+#    #+#             */
-/*   Updated: 2025/10/13 16:37:20 by clados-s         ###   ########.fr       */
+/*   Updated: 2025/10/13 16:50:55 by clados-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,5 +88,3 @@ void	child_two_process(t_pipex *data, int *pipe_fd, char **envp)
 	free(cmd_path);
 	exit(127);
 }
-
-
