@@ -1,37 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: clados-s <clados-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/08 11:17:12 by clados-s          #+#    #+#             */
-/*   Updated: 2025/10/16 14:24:10 by clados-s         ###   ########.fr       */
+/*   Created: 2025/08/01 17:02:02 by clados-s          #+#    #+#             */
+/*   Updated: 2025/10/07 14:34:53 by clados-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-
-# define PIPEX_H
+#ifndef FT_PRINTF_H
+# define FT_PRINTF_H
 
 # include "libft.h"
+# include <stdarg.h>
 # include <unistd.h>
-# include <stdio.h>
-# include <string.h>
-# include <sys/types.h>
-# include <sys/wait.h>
 
-typedef struct s_pipex
-{
-	char	**cmd1_args;
-	char	**cmd2_args;
-	char	*infile;
-	char	*outfile;
-}t_pipex;
-
-int		main(int argc, char **argv, char **envp);
-char	*get_cmd_path(char *cmd, char **envp);
-void	error_exit(char *msg, t_pipex *data);
-void	execute_command(char **cmds_args, char **envp);
+int	ft_printf(const char *format, ...);
+int	ft_putchar(char c);
+int	ft_puthexa(unsigned long n, const char *base);
+int	ft_putnbr_unsigned(unsigned int n);
+int	ft_putnbr(int n);
+int	ft_putstr(char *str);
 
 #endif

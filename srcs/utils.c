@@ -6,38 +6,11 @@
 /*   By: clados-s <clados-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 14:00:37 by clados-s          #+#    #+#             */
-/*   Updated: 2025/10/14 15:11:43 by clados-s         ###   ########.fr       */
+/*   Updated: 2025/10/17 14:45:07 by clados-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
-void	parent_process(t_pipex *data, int *pipe_fd, char **envp)
-{
-	pid_t	pid1;
-	pid_t	pid2;
-
-	pid1 = fork();
-	if (pid1 == -1)
-	{
-		perror("pipex: fork");
-		return ;
-	}
-	if (pid1 == 0)
-		child_one_process(data, pipe_fd, envp);
-	pid2 = fork();
-	if (pid2 == -1)
-	{
-		perror("pipex: fork");
-		return ;
-	}
-	if (pid2 == 0)
-		child_two_process(data, pipe_fd, envp);
-	close(pipe_fd[0]);
-	close(pipe_fd[1]);
-	waitpid(pid1, NULL, 0);
-	waitpid(pid2, NULL, 0);
-}
 
 char	*get_cmd_path(char *cmd, char **envp)
 {
