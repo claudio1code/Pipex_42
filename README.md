@@ -254,7 +254,7 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 
 ## 👤 Autor
 
-**Claudio** - [claudio1code-pipex_42](https://github.com/claudio1code)
+**Claudio Matheus** - [clados-s](https://github.com/claudio1code)
 
 ---
 
